@@ -5,28 +5,22 @@ from Funcoes import *
 if __name__ == "__main__":
     
     tamanho_populacao = 1000
-    taxa_sobrevivencia = 0.80
-    taxa_selecao_pais = 0.20
-    taxa_mutacao = 0.1
-    taxa_imigracao = 0.1
-    possivel_mutacao = int(tamanho_populacao * 0.1)
+    taxa_sobrevivencia = 0.8 
+    taxa_selecao_pais = 0.40 # Quantos por cento dos sobreviventes serão pais
+    taxa_mutacao = 0.8 # A chance que os individuos tem de mutar
+    taxa_imigracao = 0.20 
     
     # Listas para acompanhar o progresso
     melhores_avaliacoes = []
     medias_avaliacoes = []
     
+    
     populacao = gerar_populacao(tamanho_populacao)
     geracao = 0
     
-    '''resposta_teste =    [1, 'Noruegues', 'Amarela', 'Gatos', 'Agua', 'Dunhill',
-                        2, 'Dinamarques', 'Azul', 'Cavalos', 'Cha', 'Blends',
-                        3, 'Ingles', 'Vermelha', 'Passaros', 'Leite', 'Pall Mall',
-                        4, 'Alemao', 'Verde', 'Peixes', 'Cafe', 'Prince',
-                        5, 'Sueco', 'Branca', 'Cachorros', 'Cerveja', 'Bluemaster']
-    
-    populacao.append(resposta_teste)'''
     
     while True:
+           
        # Avalia a aptidão de cada genoma na população
         avaliacoes = [avaliar_genoma(genoma) for genoma in populacao]
 
@@ -37,15 +31,20 @@ if __name__ == "__main__":
         medias_avaliacoes.append(media_avaliacao)
         
         # Verificar se alguma solução atende a todos os critérios
-        if melhor_avaliacao == 16:  # (Número total de regras)
-            melhor_genoma = populacao[avaliacoes.index(16)]
-            print("Solução encontrada na geração:", geracao)
+        if melhor_avaliacao == 15:  # (Número total de regras)
+            melhor_genoma = populacao[avaliacoes.index(15)]
+            print("Solução encontrada na geração:", geracao + 1)
             print("Melhor Genoma:", melhor_genoma)
             print("Avaliação:", avaliar_genoma(melhor_genoma))
+            
+            print("\nFenótipo:\n")
+            
+            for i in range(0, len(melhor_genoma),6):
+                print(f'Casa Número: {melhor_genoma[i]}\nNacionalidade: {melhor_genoma[i+1]} | Cor: {melhor_genoma[i+2]} | Animal: {melhor_genoma[i+3]} | Bebida: {melhor_genoma[i+4]} | Cigarro: {melhor_genoma[i+5]}')
             break
         
         if len(populacao) > 10000:
-            sobreviventes = sobrevive_proporcional(populacao, 0.1)
+            sobreviventes = sobrevive_proporcional(populacao, 0.2)
         else:
             # Seleciona os sobreviventes
             sobreviventes = sobrevive_proporcional(populacao, taxa_sobrevivencia)
@@ -57,7 +56,8 @@ if __name__ == "__main__":
         descendentes = realizar_crossover(pais)
         
         #para ocorrer uma mutação
-        # Passo 1: Seleciona aleatoriamente 10 índices na listas de sobreviventes
+        possivel_mutacao = int(len(sobreviventes) * 0.1) # Quantos individuos podem ou não mutar
+        # Passo 1: Seleciona aleatoriamente índices na listas de sobreviventes
         indices_mutacao = random.sample(range(len(sobreviventes)), possivel_mutacao)
 
         # Passo 2: Para cada índice selecionado, chama a função de mutação
@@ -75,3 +75,8 @@ if __name__ == "__main__":
         print(f"Geração: {geracao + 1} | Número de Genomas: {len(populacao)} | Melhor Avaliação: {melhor_avaliacao} | Média Avaliação: {media_avaliacao:.5f}")
         
         geracao += 1
+        
+        
+        melhores_avaliacoes.clear()
+        medias_avaliacoes.clear()
+        avaliacoes.clear()

@@ -60,8 +60,7 @@ def avaliar_genoma(genoma):
                              (casa1['Cigarro'] == 'Blends' and vizinhas(casa1, casa2) and casa2['Bebida'] == 'Agua') or
                              (casa2['Cigarro'] == 'Blends' and vizinhas(casa1, casa2) and casa1['Bebida'] == 'Agua')), False)
 
-    regra16 = lambda casas: next((True for casa in casas if casa['Animal'] == 'Peixes'
-                                and all(casa['Numero'] != p['Numero'] for p in casas if p != casa)), False)
+    
 
 
     casas = [
@@ -74,7 +73,7 @@ def avaliar_genoma(genoma):
     nota_total = sum([regra1(casas), regra2(casas), regra3(casas), regra4(casas),
                     regra5(casas), regra6(casas), regra7(casas), regra8(casas),
                     regra9(casas), regra10(casas), regra11(casas), regra12(casas),
-                    regra13(casas), regra14(casas), regra15(casas), regra16(casas)])
+                    regra13(casas), regra14(casas), regra15(casas)])
     
     return nota_total
 
@@ -243,22 +242,6 @@ def realizar_crossover(pais):
         descendentes.extend([filho1, filho2])
     return descendentes
 
-'''def mutacao(genoma, taxa_mutacao):
-    caracteristica = random.randint(1, 5)
-    mutacao = []
-    genoma_mutado = []
-    if random.random() <= taxa_mutacao:
-        for ale in range(caracteristica, len(genoma), 6):
-            mutacao.append(genoma[ale])
-            
-        random.shuffle(mutacao)
-
-        cont = 0
-        for novo in range(caracteristica, len(genoma), 6):
-            genoma[novo] = mutacao[cont]
-            cont += 1
-        genoma_mutado = genoma
-    return genoma_mutado'''
 
 def mutacao(genoma, taxa_mutacao):
     caracteristica = random.randint(1, 5)
@@ -285,7 +268,7 @@ def imigracao(tamanho_populacao,taxa_imigracao):
     return novos_genomas
 
 
-'''
+""""
 resposta_teste = [1, 'Noruegues', 'Amarela', 'Gatos', 'Agua', 'Dunhill',
                   2, 'Dinamarques', 'Azul', 'Cavalos', 'Cha', 'Blends',
                   3, 'Ingles', 'Vermelha', 'Passaros', 'Leite', 'Pall Mall',
@@ -309,7 +292,8 @@ populacao = []
 populacao.append(teste)
 populacao.append(resposta_teste)
 
-#melhor_genoma_encontrado = max(populacao, key=avaliar_genoma)
-#print(melhor_genoma_encontrado)
 
-print(avaliar_genoma(resposta_teste))'''
+#print(melhor_genoma_encontrado)
+descendetes = realizar_crossover(populacao)
+melhor_genoma_encontrado = max(descendetes, key=avaliar_genoma)
+print(avaliar_genoma(melhor_genoma_encontrado))"""
